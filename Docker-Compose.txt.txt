@@ -1,0 +1,191 @@
+<----------------------------------------------------------------------------------MySqlConfigurations------------------------------------------------------------------------------------->
+
+
+1) Docker compose file:
+
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-latest
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: test
+    ports:
+      - "3307:3306"  # Changed to 3307 on host to avoid conflict
+    restart: "no"
+
+2) from cmd : docker run -p 3307:3306 --name=mysql-latest -e MYSQL_ROOT_PASSWORD=secret mysql
+
+
+<----------------------------------------------------------------------------------Postgres Configurations--------------------------------------------------------------------------------->
+
+
+1) For connecting with Postgres using Docker:
+
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: kelaskaraditya1
+      POSTGRES_PASSWORD: Aditya1234
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres-network
+    restart: "no"  # changed from unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: kelaskaraditya1@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: Aditya1234
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres-network
+    restart: "no"  # changed from unless-stopped
+
+volumes:
+  postgres:
+  pgadmin:
+
+networks:
+  postgres-network:
+
+
+run the following command:	
+
+1) docker-compose build : builds the image for the instructions which we have mentioned in the docker-compose.yaml
+2) docker-compose up : pulls image, create container and runs container.
+3) for time zone error: In ide edit configuration->add vm options and than paste {-Duser.timezone=Asia/Kolkata} in it.
+
+for running in cmd :
+
+1) for creating postgres container:
+
+docker run -d `
+--name postgres_container `
+-e POSTGRES_USER=embarkx `
+-e POSTGRES_PASSWORD=embarkx `
+-e PGDATA=/data/postgres `
+-v postgres:/data/postgres `
+-p 5432:5432 `
+--network postgres-network  `
+--restart unless-stopped `
+postgres
+
+
+2) for creating dpage/pgadmin4 container:
+
+docker run -d `
+--name pgadmin_container `
+-e PGADMIN_DEFAULT_EMAIL=kelaskaraditya1@gmail.com `
+-e PGADMIN_DEFAULT_PASSWORD=Aditya1234 `
+-e PGADMIN_CONFIG_SERVER_MODE=False `
+-v pgadmin:/var/lib/pgadmin `
+-p 5050:8080 `
+--network postgres-network  `
+--restart unless-stopped `
+dpage/pgadmin4
+
+
+<----------------------------------------------------------------------------------Mongo-Db Configurations--------------------------------------------------------------------------------->
+
+1)for running in containers cmd:
+
+1)for creating mongo container:
+
+docker run -d `
+--name mongo `
+--network mongo-network `
+-e MONGO_INITDB_ROOT_USERNAME=kelaskaraditya1 `
+-e MONGO_INITDB_ROOT_PASSWORD=Aditya1234 `
+-p 27017:27017 `
+mongo
+
+
+2) for creating mongo-express container:
+
+docker run -d `
+--name mongo-express `
+--network mongo-network `
+-e ME_CONFIG_MONGODB_ADMINUSERNAME=kelaskaraditya1 `
+-e ME_CONFIG_MONGODB_ADMINPASSWORD=Aditya1234 `
+-e ME_CONFIG_MONGODB_SERVER=mongo `
+-e ME_CONFIG_MONGODB_URL=mongodb://kelaskaraditya1:Aditya1234@mongo:27017/ `
+-p 8081:8081 `
+mongo-express
+
+
+2) Docker compose configurations:
+
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo_container
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: kelaskaraditya1
+      MONGO_INITDB_ROOT_PASSWORD: Aditya1234
+    ports:
+      - "27018:27017"
+    networks:
+      - mongo-network
+    restart: unless-stopped
+    volumes: # ✅ Added a volume to persist your data
+      - mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo_express_container
+    environment:
+      # --- Credentials for Mongo Express to connect to Mongo DB ---
+      ME_CONFIG_MONGODB_ADMINUSERNAME: kelaskaraditya1
+      ME_CONFIG_MONGODB_ADMINPASSWORD: Aditya1234
+      ME_CONFIG_MONGODB_SERVER: mongo # ✅ Use service name, it's more reliable
+      # ME_CONFIG_MONGODB_URL is not needed if you set the variables above
+
+      # --- Credentials for YOU to log into the Mongo Express Web UI ---
+      ME_CONFIG_BASICAUTH_USERNAME: kelaskaraditya1 # ✅ Set your desired UI username
+      ME_CONFIG_BASICAUTH_PASSWORD: Aditya1234      # ✅ Set your desired UI password
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongo
+    networks:
+      - mongo-network
+    restart: unless-stopped
+
+networks:
+  mongo-network:
+    driver: bridge
+
+volumes: # ✅ Define the volume
+  mongo-data:
+    driver: local
+
+username: kelaskaraditya1
+password: Aditya1234
+
+<----------------------------------------------------------------------------------Containerization---------------------------------------------------------------------------------------->
+
+for containerization of spring boot application:
+
+./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=kelaskaraditya1/<project-name>"
+
+than run : docker login (if necessary enter username & password skip if didn't asked).
+
+docker push kelaskaraditya1/<project-name>

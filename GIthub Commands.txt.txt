@@ -1,0 +1,36 @@
+1) working with local repository:
+
+1)for initializing empty git repo: git init
+2)for pushing to staging area: git add .
+3)for committing changes: git commit -m "Message"
+
+2) Logging in Git:
+
+1) for seeing all the commit's with their message
+command : git log
+2) for seeing last n commands:
+command : git log -p -n
+3) for seeing the summary of changes:
+command : git log --stat
+
+3) for pushing Local changes to remote repository:
+
+1)git remote add origin <url>
+2)git branch -M main
+3)git push -u origin main
+4) To check wheather local repository is linked with global repo or not: git remote -v (gives the repository link to verify)
+5) if any changes are done in remote repo and want to get in local repo : git pull
+
+4) Branches and Merge:
+
+1)for checking on which branch we are currently on : git branch , if local than master , if global than main
+2)for creating a new branch: git branch <name>
+3)for switching between branches: git checkout <Branch_name>
+
+if changes (extra files) in secondary branches are not committed before moving to main branch they will appear in the main branches as well but after committing those they will not appear in the main branch until it's merged.
+
+4) for merging changes into main branch: 1) move to main branch: git checkout main
+					 2) merge changes: git merge <Secondary_branch_name>
+					 3) if changes are made from secondary branch and it has to be mentioned by which branch than 						 while pushing in repo : git push origin <Branch_name> (will raise PR and able to merge)
+
+	

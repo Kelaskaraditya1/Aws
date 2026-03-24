@@ -1,0 +1,545 @@
+1) Hibernate Dependency:
+
+<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.6.9.Final</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>9.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+</dependency>
+
+
+2) Xml Configuration :file should be saved as hibernate.cfg.xml compulsorily , if stored in another package than give path of the package in configure("path to hibernate.cfg.xml") method as a parameter
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/Database-Name</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">9819375722Aditya</property>
+        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+    </session-factory>
+</hibernate-configuration>
+
+
+
+while using Xml configuration add this above <plugins/> in <build/> tag 
+
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </resource>
+    </resources>
+
+
+
+
+1)MySQL Database application Properties ( web,mysql-driver,jpa ) 
+
+spring.datasource.username=root
+spring.datasource.password=9819375722Aditya
+spring.datasource.url=jdbc:mysql://localhost:3306/user_microservice?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+
+2) for Docker container:
+
+# MySQL DB connection
+spring.datasource.url=jdbc:mysql://localhost:3307/your_database_name
+spring.datasource.username=root
+spring.datasource.password=secret
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA/Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+// for file uploading add multipart :
+
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=500MB
+spring.servlet.multipart.file-size-threshold=100KB
+
+
+
+2) Postgres Properties:
+
+1) for running Local instance.
+
+spring.datasource.username=postgres
+spring.datasource.password=9819375722Aditya
+spring.datasource.url=jdbc:postgresql://localhost:5432/<DATABASE_NAME>
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.security.user.name=kelaskaraditya1
+spring.security.user.password=Aditya@1234
+spring.jpa.show-sql=true
+
+
+2) for running using docker instance and pgadmin:
+
+spring.datasource.url=jdbc:postgresql://localhost:5433/test
+spring.datasource.username=kelaskaraditya1
+spring.datasource.password=Aditya1234
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.database=POSTGRESQL
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+
+
+
+3) MongoDb Properties:
+
+1) for running local instance:
+spring.data.mongodb.uri=mongodb://localhost:27017/{databaseName}
+
+
+2) for running through docker container:
+# Connect to MongoDB running in Docker on port 27018 (container is mapped to localhost:27018)
+spring.data.mongodb.uri=mongodb://kelaskaraditya1:Aditya1234@localhost:27018
+
+# Optional: specify default database name if needed
+ spring.data.mongodb.database={database Name}
+
+
+
+4) H2 Database Properties: 
+
+add a username and password to this properties, and use the same in H2 Console
+for accessing H2 console: localhost:8080/h2-console
+
+spring.datasource.url=jdbc:h2:file:C:/Users/kelas/test;IFEXISTS=FALSE;DB_CLOSE_DELAY=-1
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=admin
+spring.datasource.password=admin
+
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+
+
+<----------------------------------------------------------------------------------Spring Redis-------------------------------------------------------------------------------------------->
+
+spring.data.redis.host=localhost
+spring.data.redis.port=6379
+# spring.data.redis.password= (leave blank if no password is used)
+spring.data.redis.database=0
+
+
+
+<--------------------------------------------------------------------------Jwt Authentication Dependency----------------------------------------------------------------------------------->
+
+1) Dependencies:
+	
+	<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.5</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
+<-------------------------------------------------------------------------Cloudinary  Dependency---------------------------------------------------------------------------------------->
+
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.35.0</version>
+		</dependency>
+
+
+<-------------------------------------------------------------------------Docker Compose Dependency---------------------------------------------------------------------------------------->
+
+
+1) Create file named Dockerfile.
+
+<------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+# Use Maven to build the application
+FROM maven:3.9.8-amazoncorretto-17-al2023 AS build
+
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+  # Use OpenJDK to run the application
+FROM openjdk:24-slim-bullseye
+
+WORKDIR /app
+COPY --from=build /app/target/<Project-Name>-0.0.1-SNAPSHOT.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+<------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+run command : mvn clean
+
+<------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+2) create file docker-compose.yml
+
+<------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+
+<------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+run command : docker-compose up.
+
+
+<----------------------------------------------------------------------------------------Microservices------------------------------------------------------------------------------------->
+
+<----------------------------------------------------------------------------------------Eureka Client/Server------------------------------------------------------------------------------>
+
+
+1) Dependencies:
+
+    In Service Registry project(Server):
+
+	1) Add Cloud BootStrap
+	2) Add Eureka server
+
+    In Normal Spring-Boot Project/Application(Client):
+
+	1) Add Cloud BootStrap
+    	2) Add Eureka Discovery Client
+	3)load balancer
+	4)open fiegn (for api call)
+
+1) Eureka Server Configurations:
+
+eureka.instance.hostname=localhost
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false	
+
+
+2) Eureka Client Configurations:
+
+eureka.instance.prefer-ip-address=true
+eureka.client.fetch-registry=true
+eureka.client.register-with-eureka=true
+eureka.client.service-url.defaultZone=http://localhost:8080/eureka
+
+Steps:
+
+1) For Creating Eureka Server:
+
+1) create Service Registry project and add necessary dependencies.
+2) add @EnableEurekaServer annotation.
+3) add necessary configuration in application.proerties
+
+2) For creating Eureka Client/Service:
+
+Add @EnableDiscoveryClient
+1) create a service project from the eureka server , pom.xml copy dependency management tag from that project(server) and paste it below the dependencies tag in this project(client).
+2) copy the <spring-cloud.version>2025.0.0</spring-cloud.version> from properties tag from server and paste in the properties of this service project
+3) for making api call we can use Rest-Template or feign client. if using Rest-Template create a bean of rest template and annotate it with @LoadBalancer
+
+<----------------------------------------------------------------------------------------Api Gateway--------------------------------------------------------------------------------------->
+
+
+for Creating Api Gateway/Client/Service (Any request to client is passed by Api-Gateway):
+
+add the dependencies :
+
+1) Cloud Bootstrap
+2) Eureka Discovery client
+3) and add this dependency for web-flux
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+4 )Loadbalancer
+
+application.properties:
+
+we have to register every service in application properties.
+
+# Api-Gateway configurations:
+
+#1) Hotel Microservice:
+
+spring.cloud.gateway.routes[0].id=hotel-microservice
+spring.cloud.gateway.routes[0].uri=http://localhost:8083
+spring.cloud.gateway.routes[0].predicates[0]=Path=/hotel/**
+
+
+#2) Rating Microservice:
+
+spring.cloud.gateway.routes[1].id=rating-microservice
+spring.cloud.gateway.routes[1].uri=http://localhost:8082
+spring.cloud.gateway.routes[1].predicates[0]=Path=/ratings/**
+
+
+#3) User Microservice:
+
+spring.cloud.gateway.routes[2].id=user-microservice
+spring.cloud.gateway.routes[2].uri=http://localhost:8081
+spring.cloud.gateway.routes[2].predicates[0]=Path=/user/**
+
+logging.level.root=info
+logging.level.org.springframework.cloud.gateway.route.RouteDefinitionLocator=INFO
+logging.level.org.springframework.cloud.gateway=TRACE
+
+<----------------------------------------------------------------------------------------Config Server------------------------------------------------------------------------------------->
+
+4) Config Server:  microservices communicate with config server for fetching configuration.
+
+Add dependencies:
+
+1) Config Server.
+
+add application.properties:
+
+spring.cloud.config.server.git.uri=https://github.com/Kelaskaraditya1/Remote-Configurations.git {remote Configuration git repo link}
+spring.cloud.config.server.git.clone-on-start=true
+
+for fetching the configurations from server/git repo:localhost:8080/{filename}/default (if no profile is selected than gives the default configuration)
+
+for fetching a particular profile: localhost:8080/{file name}/{profile-name}, for eg: localhost:8080/configclient/production.
+
+<----------------------------------------------------------------------------------------Config Client------------------------------------------------------------------------------------->
+
+config client : normal client, which fetches remote properties from config server.
+
+dependencies: 
+
+1) config client
+2) cloud bootstrap.
+
+application properties:
+
+spring.config.import=optional:configserver:http://localhost:8080 , configserver is a keyword we have to keep as it is, 8080 port of config server.
+
+Note:
+
+The base name of the file on GitHub like configclient-production, configclient-test, configclient-development this configclient should match with the name of the spring boot application i.e spring.application.name=configclient of the client which is requesting the configurations from the config server.
+
+<----------------------------------------------------------------------------------------Circuit Breaker----------------------------------------------------------------------------------->
+
+
+5) Circuit Breaker Pattern: using Resilience 4-j dependency.
+
+Circuit breaker is used to stop gracefully, if any of the microservice fails to give response or is down.
+It is used to implement fault-tolerance mechanism.
+
+working:
+
+1) It works as a Finite State Autometa which has 3 states open,close and half-open 
+2) It works as a Electrical circuit
+3) Initially when all services are active than the state is close, Circuit is closed.
+4) When any of the service is down than it moves to open state and it remains in open state for some time, Circuit is open.
+5) After some time service moves to half open state and again it hit's the service if it get's satisfactory response than it moves to close state else it moves to open state.
+6) We have to add a fallback method means if the service is down that method will be executed we have to use @Circuitbreaker annotation and it takes 2 parametes name and fall back method. the name will be used in the application.properties and the method arguments in the fall back method should be same as the actual api call method, and the return type should also be the same.	
+
+1) Add dependencies:
+
+	1)actuator
+	2)aop (add aop to actuator dependency)
+	3)Resilience-4j:
+
+		<dependency>
+			<groupId>io.github.resilience4j</groupId>
+			<artifactId>resilience4j-spring-boot2</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+2) application.properties:
+
+
+# Actuator configurations:
+
+management.health.circuitbreakers.enabled=true
+management.endpoints.web.exposure.include=health
+management.endpoint.health.show-details=always
+
+#Resilience-4j configurations: can be multiple as no of @Circuitbreaker's added to restcontroller , change "ratingHotelBreaker" with the name mentioned in the annotation.
+
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.registerHealthIndicator=true
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.eventConsumerBufferSize=10
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.failureRateThreshold=50
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.minimumNumberOfCalls=5
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.automaticTransitionFromOpenToHalfOpenEnabled=true
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.waitDurationInOpenState=6s
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.permittedNumberOfCallsInHalfOpenState=3
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.slidingWindowSize=10
+resilience4j.circuitbreaker.instances.ratingHotelBreaker.slidingWindowType=COUNT_BASED
+
+<---------------------------------------------------------------------------------------Retry-Model--------------------------------------------------------------------------------------->
+
+use annotation @Retry(name="",fallback="")
+
+1)same dependencies as above for circuit breaker.
+
+add application.properties:
+
+retry.instances.{name from annotation}.max-attempts=3
+retry.instances.{name from annotation}.wait-duration=5s
+
+<---------------------------------------------------------------------------------------Kafka Event-Drivern--------------------------------------------------------------------------------------->
+
+1) For accessing kafka from cli use 2 containers zookeeper and kafka
+
+	1)Zookeeper container:
+
+docker run -d `
+  --name zookeeper `
+  -p 2181:2181 `
+  -e ZOOKEEPER_CLIENT_PORT=2181 `
+  -e ZOOKEEPER_TICK_TIME=2000 `
+  confluentinc/cp-zookeeper:7.5.0
+
+	2) kafka container:
+
+docker run -d `
+  --name kafka `
+  -p 9092:9092 `
+  -e KAFKA_BROKER_ID=1 `
+  -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 `
+  -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 `
+  -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 `
+  --link zookeeper `
+  confluentinc/cp-kafka:7.5.0
+
+
+than access the bash of kafka: docker exec -it kafka bash
+
+application.properties:
+
+1) Consumer:
+
+spring.kafka.consumer.bootstrap-servers=localhost:9092
+spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
+spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+spring.kafka.consumer.properties.spring.deserializer.value.delegate.class=org.springframework.kafka.support.serializer.JsonDeserializer
+spring.kafka.consumer.properties.spring.json.trusted.packages=*
+spring.kafka.consumer.properties.spring.json.value.default.type=com.starkindustries.consumer.model.Rider {Deserializable Object}
+
+2) Producer:
+
+spring.kafka.producer.bootstrap-servers=localhost:9092
+spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.StringSerializer
+spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
+spring.kafka.producer.properties.spring.json.add.type.headers=false
+
+
+<---------------------------------------------------------------------------------------Kafka Cloud-Function--------------------------------------------------------------------------------------->
+
+1) Function<T,R>: this is a type of function which takes a input of type t and gives a output of type R
+
+public Function<String,Integer> getLength(){ // Takes a input of type String and gives a output of type Int
+return value->value.getLength()
+}
+
+// In main function: getLength.apply("parameter of type String");
+
+2) Consumer<T>: this is a type of function which takes a input T, does some processing but returns nothing.
+
+public Consumer<String> greetings(){ value->// Takes a input of type String and return's nothing.
+System.out.println("I am "+value);
+}
+
+// In main function: greetings().accept("parameter of type String");
+
+3) Supplier<R>: Takes no input , but returns a output of type R.
+
+public Supplier<String> greetings(){ value->// Takes nothing, but return's a String.
+return value;
+}
+
+// In main function: System.out.println(greetings.get());
+
+4) Predicate<T>:Takes a input of type T and returns Boolean if condition is true or false.
+
+public Predicate<String> test(){ value-> // takes a string and returns true is length is greater than or equal to 10 else false.
+return value.length()>=10;
+}
+
+test.test("Aditya")
+
+dependencies:
+
+1) Function 
+once added there is a context dependency above take that as well , also copy the cloud version and dependency management.
+
+2) add this dependency:
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-function-web</artifactId>
+		</dependency>
+
+spring.cloud.function.definition=uppercase {name of the cloud function}
+spring.cloud.function.web.path=/uppercase {route}
+
+<---------------------------------------------------------------------------------------Rabbit Mq (Message Queue)---------------------------------------------------------------------------------------->

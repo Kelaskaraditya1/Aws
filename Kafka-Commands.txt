@@ -1,0 +1,60 @@
+<---------------------------------------------------------------------------------------Rabbit-MQ --------------------------------------------------------------------------------------->
+
+
+
+
+<---------------------------------------------------------------------------------------Kafka Event-Drivern--------------------------------------------------------------------------------------->
+
+
+Kafka: For Event-Driven Processing.
+
+For running using Docker.
+
+	1)Zookeeper container:
+
+docker run -d `
+  --name zookeeper `
+  -p 2181:2181 `
+  -e ZOOKEEPER_CLIENT_PORT=2181 `
+  -e ZOOKEEPER_TICK_TIME=2000 `
+  confluentinc/cp-zookeeper:7.5.0
+
+	2) kafka container:
+
+docker run -d `
+  --name kafka `
+  -p 9092:9092 `
+  -e KAFKA_BROKER_ID=1 `
+  -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 `
+  -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 `
+  -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 `
+  --link zookeeper `
+  confluentinc/cp-kafka:7.5.0
+
+for accessing Kafka through cli use the kafka container: docker exec -it kafka bash
+
+1) Topic: An Event which is produced and which is listened by the consumers.
+command's:
+1) for creating a topic: kafka-topics --create --topic {name} --bootstrap-server localhost:9092 --partitions {no} --replication-factor {no}
+
+partition: In how many parts the topic will be divided.
+replication no: how many copies are to be maintained.
+
+2) for listing all kafka topics : kafka-topics --list --bootstrap-server localhost:9092
+
+3) for describing a kafka topic: kafka-topics --describe --topic {name} --bootstrap-server localhost:9092
+
+4) for starting producer(who broadcast messages): kafka-console-producer --topic {name-of topic} --bootstrap-server localhost:9092
+
+5) for starting consumer(who listens to messages of a particular topic): kafka-console-consumer --topic {name of topic} --bootstrap-server localhost:9092 --from-beginning
+
+6) for passing message as a key, value pair (key:message)so that kafka can hash the key, only apply to producer.
+kafka-console-producer --topic {name of topic} --bootstrap-server localhost:9092 --property "key.pars=true" --property "key:separator=:"
+
+7) to form groups of consumers and only few or one of them can hear the message that is broadcasted.
+kafka-console-consumer --topic {name of topic} --group {name of group} --bootstrap-server localhost:9092 
+
+8) to describe a kafka topic: kafka-topics --describe {name of topic} --bootstrap-server localhost:90921
+gives no of partitions in the topic and other key informations
+
+

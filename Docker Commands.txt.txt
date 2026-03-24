@@ -1,0 +1,74 @@
+1)For pulling a docker image to local: docker pull image-name
+
+2)For running (creating a docker container from Image) a docker image : docker run image-name.
+			       docker run -it image-name (interactive mode)
+if image doesn't exist than docker first pulls the image from docker server than runs it.
+
+3) for starting the existing docker container: docker start container_name/container_id.
+
+4) for listing all the docker containers: docker ps -a
+
+5) for listing only the running containers: docker ps
+
+6) for listing the images: docker images
+
+7) for deleting a docker image : docker rmi image-name (first delete the container , than delete the image)
+
+8) for deleting the container : docker rm container-id
+
+9) for stopping a running container: docker stop container-id
+
+10) docker run -d -e MYSQL_ROOT_PASSWORD=secret --name mysql-latest mysql  
+MySQL for running a MySQL container
+-d : for running in detached mode
+-e for entering environment variable
+--name = mysql-latest for giving name to the container, last "mysql" refers name of the docker image
+  
+11) for entering the base or shell of any container: docker exec -it mysql-latest /bin/bash
+
+12) port binding: 
+ports of host machine and the server running on the host machine are different     
+so to transfer the request from port of host to port of server we use port-binding.
+uses -p port1:port2 
+docker run -pport1:port2 image-name
+
+13) docker network: 
+a network or a group where docker container's can communicate with each other without requirement of any localhost or any port.
+
+	1)for checking docker networks: docker network ls
+	2)for creating a docker networks: docker network create <network-name>
+
+for seeing which containers are running in a docker network: docker network inspect <network-name>
+
+14) for connecting to MongoDb using Docker:
+1) we have to create a docker network
+2) create a mongo container using:
+
+ docker run -d `
+-p27017:27017 `
+--name mongo `
+--network mongo-network `
+-e MONGO_INITDB_ROOT_USERNAME=kelaskarraditya1 `
+-e MONGO_INITDB_ROOT_PASSWORD=Aditya1234 `
+mongo
+
+
+3) than create a mongo-express(Ui for Mongo-Db console) can be accessed using: http://localhost:8081/
+
+username: admin
+password: pass (this username is for accessing mongo express and this are different from the docker commands)
+
+docker run -d `
+-p8081:8081 `
+--name mongo-express `
+--network mongo-network `
+-e ME_CONFIG_MONGODB_ADMINUSERNAME=kelaskarraditya1 `
+-e ME_CONFIG_MONGODB_ADMINPASSWORD=Aditya1234 `
+-e ME_CONFIG_MONGODB_URL="mongodb://kelaskarraditya1:Aditya1234@mongo:27017" `
+mongo-express
+
+4) for containerization of spring boot application:
+
+./mvnw spring-boot:build-image "-Dspring-boot.build-image.imageName=kelaskaraditya1/<project-name>"
+
+

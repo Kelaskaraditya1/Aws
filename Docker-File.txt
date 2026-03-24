@@ -1,0 +1,77 @@
+create DockerFile for hosting spring-boot application
+
+# Use Maven to build the application
+FROM maven:3.9.8-amazoncorretto-17-al2023 AS build
+
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+  # Use OpenJDK to run the application
+FROM openjdk:24-slim-bullseye
+
+WORKDIR /app
+COPY --from=build /app/target/DockerDeployment-0.0.1-SNAPSHOT.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+// add in docker-compose.yml
+
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+
+
+<-------------------------------------------------------------------------------Configuration in Docker file--------------------------------------------------------------------------------->
+
+
+
+# ===== BUILD STAGE =====
+FROM maven:3.9.8-amazoncorretto-17-al2023 AS build
+
+WORKDIR /app
+
+# Copy Maven files first for dependency caching
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn .mvn
+
+# Download dependencies
+RUN ./mvnw dependency:go-offline
+
+# Copy source code
+COPY src ./src
+
+# Build application
+RUN ./mvnw clean package -DskipTests
+
+# ===== RUNTIME STAGE =====
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copy jar from build stage (auto-detects jar file)
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose port 8080
+EXPOSE 8080
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+just add this according to ur project, first time may get error so run the below command.
+
+git update-index --chmod=+x mvnw
+git commit -m "Make mvnw executable"
+git push
+
